@@ -1,0 +1,34 @@
+- name: remove war file from ansible
+  file:
+    path: /home/ansible/provision/roles/cicd/files/my-webapp-1.0-SNAPSHOT.war
+    state: absent
+  when: inventory_hostname == 'localhost'
+  tags: [rm]
+
+- name: remove war file from tomcat
+  file:
+    path: /opt/tomcat/webapps/my-webapp-1.0-SNAPSHOT.war
+    state: absent
+  when: inventory_hostname == '10.10.10.14'
+  tags: [rmm]
+- name: remove war file from tomcat
+  file:
+    path: /opt/tomcat/webapps/my-webapp-1.0-SNAPSHOT
+    state: absent
+  when: inventory_hostname == '10.10.10.14'
+  tags: [rmm]
+
+- name: fetch from git
+  fetch:
+    src: /home/my-java-app/target/my-webapp-1.0-SNAPSHOT.war
+    dest: /home/ansible/provision/roles/cicd/files/
+    flat: yes
+  when: inventory_hostname == '10.10.10.20'
+  tags: [fetch]
+
+- name: copy to tomcat
+  copy:
+    src: /home/ansible/provision/roles/cicd/files/my-webapp-1.0-SNAPSHOT.war
+    dest: /opt/tomcat/webapps/
+  when: inventory_hostname == '10.10.10.14'
+  tags: [copy]
