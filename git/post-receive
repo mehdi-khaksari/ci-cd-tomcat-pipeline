@@ -1,0 +1,17 @@
+#!/bin/bash
+
+
+REPO_DIR="/srv/git/my-java-app.git"
+WORK_DIR="/home/my-java-app"
+ANSIBLE_SERVER="10.10.10.17"
+
+echo "===> Pull latest code..."
+cd "$WORK_DIR" || exit 1
+git pull origin master
+
+echo "===> Building project..."
+mvn clean package
+
+echo "===> Running Ansible playbook on $ANSIBLE_SERVER ..."
+ssh root@$ANSIBLE_SERVER "cd /home/ansible/provision && ansible-playbook -i inventory/cicd cicd.yml"
+
