@@ -77,21 +77,21 @@ When a developer pushes code to the Git server, a `post-receive` hook:
 
 ```bash
 cd /srv/git
-git init --bare my-java-app.git
+git init --bare app.git
 ```
 
 ### 2. Add post-receive Hook
 Create the post-receive file at:
 
 ```bash
-/srv/git/my-java-app.git/hooks/post-receive
+/srv/git/app.git/hooks/post-receive
 ```
 Content:
 ```bash
 #!/bin/bash
 
-REPO_DIR="/srv/git/my-java-app.git"
-WORK_DIR="/home/my-java-app"
+REPO_DIR="/srv/git/app.git"
+WORK_DIR="/home/app"
 ANSIBLE_SERVER="10.10.10.17"
 
 echo "===> Pull latest code..."
@@ -107,13 +107,13 @@ ssh root@$ANSIBLE_SERVER "cd /home/ansible/provision && ansible-playbook -i inve
 
 Make it executable:
 ```bash
-chmod +x /srv/git/my-java-app.git/hooks/post-receive
+chmod +x /srv/git/app.git/hooks/post-receive
 ```
 
 ### 3. Clone Repo in Work Directory (on Git Server)
 ```bash
 cd /home
-git clone /srv/git/my-java-app.git my-java-app
+git clone /srv/git/app.git app
 ```
 ### 4. Configure Ansible Playbook (on Ansible Server 10.10.10.17)
 Edit inventory file:
@@ -153,7 +153,7 @@ When .war is copied here, Tomcat auto-deploys the app:
 ### 6. Trigger the Pipeline
 Once you push new code to the Git server (e.g. via developer machine):
 ```bash
-git remote add origin ssh://git@10.10.10.20/srv/git/my-java-app.git
+git remote add origin ssh://git@10.10.10.20/srv/git/app.git
 git push origin master
 ```
 This will:
