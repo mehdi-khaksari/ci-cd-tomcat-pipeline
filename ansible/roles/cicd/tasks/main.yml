@@ -10,12 +10,6 @@
     state: absent
   when: inventory_hostname == '10.10.10.14'
 
-- name: remove war file from tomcat
-  file:
-    path: /opt/tomcat/webapps/my-webapp-1.0-SNAPSHOT
-    state: absent
-  when: inventory_hostname == '10.10.10.14'
-
 - name: fetch from git
   fetch:
     src: /home/my-java-app/target/my-webapp-1.0-SNAPSHOT.war
